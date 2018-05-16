@@ -8,7 +8,6 @@ func TestIsBlank(t *testing.T) {
 	strC := "not blank"
 
 	intA := 0
-	var nilA interface{} = nil
 
 	if !isBlank(strA) {
 		t.Fail()

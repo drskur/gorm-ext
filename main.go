@@ -24,7 +24,7 @@ func (dbq DBQuery) Query() string {
 	case Like:
 		query = dbq.Field + " LIKE ?"
 	case In:
-		query = dbq.Field + " IN ?"
+		query = dbq.Field + " IN (?)"
 	case Gt:
 		query = dbq.Field + " > ?"
 	case Gte:
