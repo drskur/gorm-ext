@@ -2,8 +2,6 @@ package gorm_ext
 
 import (
 	"github.com/jinzhu/gorm"
-	"reflect"
-	"strings"
 )
 
 type Oper int
@@ -49,10 +47,6 @@ type DBQuery struct {
 // if args don't contain zero value (nil, '', 0) then apply where query.
 func WhereOpt(db *gorm.DB, query string, args ...interface{}) *gorm.DB {
 	for _, v := range args {
-		// string v can contains "%" because of LIKE Operator
-		if rv := reflect.ValueOf(v); rv.Kind() == reflect.String {
-			v = strings.Replace(v.(string), "%", "", 0)
-		}
 		if isBlank(v) {
 			return db
 		}

@@ -1,12 +1,18 @@
 package gorm_ext
 
-import "reflect"
+import (
+	"reflect"
+	"strings"
+)
+
 
 func isBlank(input interface{}) bool {
 	value := reflect.ValueOf(input)
 	switch value.Kind() {
 	case reflect.String:
-		return value.Len() == 0
+		// value can contains "%" because of LIKE Operator
+		stripStr := strings.Replace(value.String(), "%", "", -1)
+		return len(stripStr) == 0
 	case reflect.Bool:
 		return !value.Bool()
 	case reflect.Int, reflect.Int8, reflect.Int16, reflect.Int32, reflect.Int64:
