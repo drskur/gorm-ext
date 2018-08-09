@@ -2,6 +2,7 @@ package gorm_ext
 
 import (
 	"github.com/jinzhu/gorm"
+	"github.com/drskur/gorm-ext/types"
 )
 
 type Oper int
@@ -58,7 +59,21 @@ func WhereOpt(db *gorm.DB, query string, args ...interface{}) *gorm.DB {
 func WhereArrOpt(db *gorm.DB, queryArr []DBQuery) *gorm.DB {
 	for _, q := range queryArr {
 		if !isBlank(q.Arg) {
-			db = db.Where(q.Query(), q.Arg)
+			var arg interface{}
+
+			switch v := q.Arg.(type) {
+			case types.BoolKey:
+				if ok, err := v.Parse(); err != nil {
+					continue
+				} else {
+					arg = ok
+				}
+
+			default:
+				arg = q.Arg
+
+			}
+			db = db.Where(q.Query(), arg)
 		}
 	}
 
