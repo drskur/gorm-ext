@@ -15,13 +15,18 @@ func (k SortKey) IsValid(sortable []string) bool {
 }
 
 func (k SortKey) Sql() string {
+	str := string(k)
+	if strings.HasPrefix(str,"-") {
+		return str[1:] + " DESC"
+	}
+
 	return string(k)
 }
 
 func (k SortKey) SqlPrefix(prefix string) string {
 	strKey := string(k)
 	if strings.HasPrefix(strKey, "-") {
-		return "-" + prefix + strKey[1:]
+		return prefix + k.Sql()
 	}
 
 	return prefix + strKey
