@@ -19,3 +19,14 @@ func (s CsvInt) Parse() []int {
 
 	return result
 }
+
+type CsvString string
+
+func (s CsvString) Parse() []string {
+	var result []string
+	for _, v := range strings.Split(string(s), ",") {
+		result = append(result, strings.TrimSpace(v))
+	}
+
+	return result
+}
